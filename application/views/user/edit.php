@@ -18,7 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <form action="" method="post" accept-charset="utf-8" id="update">
            <fieldset>
               <legend>update user</legend>
-              <div><label>username: </label><input type="text" name="username" value="<?=$info[0]->username?>" size="25"  /></div>
+              <div><label>username: </label><input type="text" name="username" value="<?=$info['username']?>" size="25"  /></div>
               <br />
               <div><label>Password: </label><input type="password" name="password" value="" size="25"  /></div>
               <br />

@@ -43,10 +43,10 @@ a{
   		foreach ($users as $value) {
   ?>
   <tr>
-    <td><?php echo $value->id?></td>
-    <td><?php echo $value->username?></td>
-    <td><a href="<?php echo base_url('/edit/' . $value->id)?>">edit</a></td>
-    <td><a href="<?php echo base_url('/delete/' . $value->id)?>">delete</a></td>
+    <td><?php echo $value['id']?></td>
+    <td><?php echo $value['username']?></td>
+    <td><a href="<?php echo base_url('/edit/' . $value['id'])?>">edit</a></td>
+    <td><a href="<?php echo base_url('/delete/' . $value['id'])?>">delete</a></td>
   </tr>
   <?php }?>
 </table>

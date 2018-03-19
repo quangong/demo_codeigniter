@@ -8,8 +8,9 @@ class User extends CI_Model
 
     public function list()
     {
-       	$sql = "select * from users";
-        return $this->db->query($sql)->result();
+        $this->db->select('*');
+        $this->db->order_by('id', 'asc');
+        return $this->db->get('users')->result_array();
     }
 
     public function create($data){
@@ -25,26 +26,33 @@ class User extends CI_Model
 
     function update($id, $data)
     {
-        if(!$this->checkUserExist($data['username']))
+        $this->db->where('username', $data['username']);
+        $this->db->where('id !=', $id);
+        $count = $this->db->get('users')->num_rows();
+        if($count > 0)
             return false;
         $this->db->where('id',$id);
         return $this->db->update('users',$data);
     }
 
     function checkLogin($data){
-        $sql = "select * from users where username='".$data['username']."' and password='".$data['password']."'";
-        return $this->db->query($sql)->result();
+        $this->db->where('username', $data['username']);
+        $this->db->where('password', $data['password']);
+        $count = $this->db->get('users')->num_rows();
+        if($count > 0)
+            return true;
+        return false;
     }
 
     function getUser($id){
-        $sql = "select * from users where id=" . $id;
-        return $this->db->query($sql)->result();
+        $this->db->where('id',$id);
+        return $this->db->get('users')->row_array();
     }
 
     public function checkUserExist($username){
-        $sql = "select count(id) from users where username='".$username ."'";
-        $count = $this->db->query($sql)->result();
-        if($count[0]->count>0)
+        $this->db->where('username',$username);
+        $count = $this->db->get('users')->num_rows();
+        if($count > 0)
             return false;
         return true;
     }

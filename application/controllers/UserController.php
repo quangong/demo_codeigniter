@@ -22,7 +22,7 @@ class UserController extends CI_Controller{
 				$this->session->set_flashdata('mess','user already exist!');
 			}
 		}
-		return $this->load->view('users/create');
+		return $this->load->view('user/create');
 	}
 
 	public function updateUser(){
@@ -44,7 +44,7 @@ class UserController extends CI_Controller{
 			}
 		}
 		$data['info'] = $info;
-		return $this->load->view('users/edit',$data);
+		return $this->load->view('user/edit',$data);
 	}
 
 	public function deleteUser(){
@@ -64,7 +64,7 @@ class UserController extends CI_Controller{
 					'password' => md5($this->input->post('password'))
 				);
 				$checkLogin = $this->user->checkLogin($userInfor);
-				if(empty($checkLogin)){
+				if(!$checkLogin){
 					$this->session->set_flashdata('mess','info incorrect');
 				}
 				else{
@@ -73,14 +73,14 @@ class UserController extends CI_Controller{
 				}
 			}
 		}
-		return $this->load->view('users/login');
+		return $this->load->view('user/login');
 	}
 
 	public function index(){
 		if(isset($_SESSION['user'])){
 			$users = $this->user->list();
 			$data['users'] = $users;
-			return $this->load->view('users/home',$data);
+			return $this->load->view('user/home',$data);
 		}
 		return redirect(base_url().'login');
 	}
