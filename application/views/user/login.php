@@ -18,11 +18,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <form action="" method="post" accept-charset="utf-8" id="login">
            <fieldset>
               <legend>Login</legend>
-              <div><label>username: </label><input type="text" name="username" value="" size="25"  /></div>
-              <br />
-              <div><label>Password: </label><input type="password" name="password" value="" size="25"  /></div>
-              <br />
-              <input type="submit" name="ok" value="login"  />
+                <div>
+                    <label>username: </label>
+                    <input type="text" name="username" value="" size="25"  />
+                </div>
+                <br>
+                <div>
+                    <label>Password: </label>
+                    <input type="password" name="password" value="" size="25"  />
+                </div>
+                <br>
+                <input type="submit" name="ok" value="login"  />
            </fieldset>
         </form>
         <script type="text/javascript">
