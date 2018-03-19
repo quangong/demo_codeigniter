@@ -1,4 +1,5 @@
 <?php
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class UserController extends CI_Controller{
 	function __construct(){
 		parent::__construct();
@@ -82,11 +83,11 @@ class UserController extends CI_Controller{
 			$data['users'] = $users;
 			return $this->load->view('user/home', $data);
 		}
-		return redirect(base_url() . 'login');
+		return redirect(base_url('login'));
 	}
 
 	public function logout(){
 		$this->session->sess_destroy();
-		return redirect(base_url() . 'login');
+		return redirect(base_url('login'));
 	}
 }

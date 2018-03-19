@@ -8,7 +8,10 @@ class User extends CI_Model
 
     public function list()
     {
-        return $this->db->select('*')->order_by('id')->get('users')->result_array();
+        return $this->db->select('*')
+            ->order_by('id')
+            ->get('users')
+            ->result_array();
     }
 
     public function create($data){
@@ -47,7 +50,9 @@ class User extends CI_Model
     }
 
     public function checkUserExist($username){
-        $count = $this->db->where('username', $username)->get('users')->num_rows();
+        $count = $this->db->where('username', $username)
+            ->get('users')
+            ->num_rows();
         if($count > 0)
             return false;
         return true;
