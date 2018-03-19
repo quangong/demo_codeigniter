@@ -3,22 +3,13 @@ class UserController extends CI_Controller{
 	function __construct(){
 		parent::__construct();
 		$this->load->model('user');
+		//$this->output->cache(20);
 	}
 
 	public function createUser(){
-		$user = array(
-	    "name" => "username",
-	    "size" => "25",
-		);
-		$pass = array(
-	    "name" => "password",
-	    "size" => "25",
-		);
-		$data['user'] = $user;
-		$data['pass'] = $pass;
 		if($this->input->post()){
-			$this->form_validation->set_rules('username','username','required|min_length[5]|max_length[12]');
-			$this->form_validation->set_rules('password','password','required|min_length[5]|max_length[12]');
+			$this->form_validation->set_rules('username','username','required|min_length[6]|max_length[10]');
+			$this->form_validation->set_rules('password','password','required|min_length[6]|max_length[10]');
 			if($this->form_validation->run()){
 				$userInfor=array(
 					'username' => $this->input->post('username'),
@@ -31,15 +22,15 @@ class UserController extends CI_Controller{
 				$this->session->set_flashdata('mess','user already exist!');
 			}
 		}
-		return $this->load->view('create',$data);
+		return $this->load->view('users/create');
 	}
 
 	public function updateUser(){
 		$id = $this->uri->segment(2);
 		$info = $this->user->getUser($id);
 		if($this->input->post()){
-			$this->form_validation->set_rules('username','username','required|min_length[5]|max_length[12]');
-			$this->form_validation->set_rules('password','password','required|min_length[5]|max_length[12]');
+			$this->form_validation->set_rules('username','username','required|min_length[6]|max_length[10]');
+			$this->form_validation->set_rules('password','password','required|min_length[6]|max_length[10]');
 			if($this->form_validation->run()){
 				$userInfor=array(
 					'username' => $this->input->post('username'),
@@ -53,18 +44,7 @@ class UserController extends CI_Controller{
 			}
 		}
 		$data['info'] = $info;
-		$user = array(
-	    "name" => "username",
-	    "size" => "25",
-	    "value" => $info[0]->username,
-		);
-		$pass = array(
-	    "name" => "password",
-	    "size" => "25",
-		);
-		$data['user'] = $user;
-		$data['pass'] = $pass;
-		return $this->load->view('edit',$data);
+		return $this->load->view('users/edit',$data);
 	}
 
 	public function deleteUser(){
@@ -75,16 +55,6 @@ class UserController extends CI_Controller{
 	}
 
 	public function login(){
-		$user = array(
-	    "name" => "username",
-	    "size" => "25",
-		);
-		$pass = array(
-	    "name" => "password",
-	    "size" => "25",
-		);
-		$data['user'] = $user;
-		$data['pass'] = $pass;
 		if($this->input->post()){
 			$this->form_validation->set_rules('username','username','required');
 			$this->form_validation->set_rules('password','password','required');
@@ -103,14 +73,14 @@ class UserController extends CI_Controller{
 				}
 			}
 		}
-		return $this->load->view('login_form_helper',$data);
+		return $this->load->view('users/login');
 	}
 
 	public function index(){
 		if(isset($_SESSION['user'])){
 			$users = $this->user->list();
 			$data['users'] = $users;
-			return $this->load->view('home',$data);
+			return $this->load->view('users/home',$data);
 		}
 		return redirect(base_url().'login');
 	}

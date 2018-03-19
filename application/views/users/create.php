@@ -3,35 +3,53 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?><!DOCTYPE html>
 <html>
     <head>
-        <title></title>
+        <title>create user</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script type="text/javascript" src="/application/views/jquery-3.1.1.min.js" ></script>
         <script type="text/javascript" src="/application/views/jquery.validate.js" ></script>
+        <style type="text/css" media="screen">
+            form{
+                width: 600px;
+            }
+        </style>
      </head>
     <body>
-        <form method="POST" action="" id="login">
-            <div>Username : <input type="text" name="username" value=""/> <br/></div>
-            <div class="error"></div>
-            <div>Password : <input type="password" name="password" value=""/> <br/>
-            <input type="submit" name="submit_login" value="Login"/></div>
+        <b style="color:red"><?= $this->session->flashdata('mess')?></b>
+        <form action="" method="post" accept-charset="utf-8" id="create">
+           <fieldset>
+              <legend>create user</legend>
+              <div><label>username: </label><input type="text" name="username" value="" size="25"  /></div>
+              <br />
+              <div><label>Password: </label><input type="password" name="password" value="" size="25"  /></div>
+              <br />
+              <input type="submit" name="ok" value="create"  />
+           </fieldset>
         </form>
         <script type="text/javascript">
         $(document).ready(function(){
-                $('#login').validate({
+                $('#create').validate({
                     rules:{
                         username:{
                             required:true,
+                            minlength:6,
+                            maxlength:10
                         },
                         password:{
                             required:true,
+                            minlength:6,
+                            maxlength:10
                         },
                     },
                     messages:{
                         username:{
                             required:"vui lòng nhập username",
+                            minlength:"Enter at least 6 characters",
+                            maxlength:"Enter no more than 10 characters"
                         },
                         password:{
                             required:"vui lòng nhập password",
+                            minlength:"Enter at least 6 characters",
+                            maxlength:"Enter no more than 10 characters"
                         },
                     }
                 });
