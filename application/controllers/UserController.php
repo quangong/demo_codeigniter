@@ -8,18 +8,18 @@ class UserController extends CI_Controller{
 
 	public function createUser(){
 		if($this->input->post()){
-			$this->form_validation->set_rules('username','username','required|min_length[6]|max_length[10]');
-			$this->form_validation->set_rules('password','password','required|min_length[6]|max_length[10]');
+			$this->form_validation->set_rules('username', 'username', 'required|min_length[6]|max_length[10]');
+			$this->form_validation->set_rules('password', 'password', 'required|min_length[6]|max_length[10]');
 			if($this->form_validation->run()){
-				$userInfor=array(
+				$userInfor = array(
 					'username' => $this->input->post('username'),
 					'password' => md5($this->input->post('password'))
 				);
 				if($this->user->create($userInfor)){
-					$this->session->set_flashdata('mess','create success!');
+					$this->session->set_flashdata('mess', 'create success!');
 					return redirect(base_url());
 				}
-				$this->session->set_flashdata('mess','user already exist!');
+				$this->session->set_flashdata('mess', 'user already exist!');
 			}
 		}
 		return $this->load->view('user/create');
@@ -29,18 +29,18 @@ class UserController extends CI_Controller{
 		$id = $this->uri->segment(2);
 		$info = $this->user->getUser($id);
 		if($this->input->post()){
-			$this->form_validation->set_rules('username','username','required|min_length[6]|max_length[10]');
-			$this->form_validation->set_rules('password','password','required|min_length[6]|max_length[10]');
+			$this->form_validation->set_rules('username','username', 'required|min_length[6]|max_length[10]');
+			$this->form_validation->set_rules('password', 'password', 'required|min_length[6]|max_length[10]');
 			if($this->form_validation->run()){
-				$userInfor=array(
+				$userInfor = array(
 					'username' => $this->input->post('username'),
 					'password' => md5($this->input->post('password'))
 				);
 				if($this->user->update($id, $userInfor)){
-					$this->session->set_flashdata('mess','update success!');
+					$this->session->set_flashdata('mess', 'update success!');
 					return redirect(base_url());
 				}
-				$this->session->set_flashdata('mess','user already exist!');
+				$this->session->set_flashdata('mess', 'user already exist!');
 			}
 		}
 		$data['info'] = $info;
@@ -50,25 +50,25 @@ class UserController extends CI_Controller{
 	public function deleteUser(){
 		$id = $this->uri->segment(2);
 		$this->user->delete($id);
-		$this->session->set_flashdata('mess','delete success!');
+		$this->session->set_flashdata('mess', 'delete success!');
 		return redirect(base_url());
 	}
 
 	public function login(){
 		if($this->input->post()){
-			$this->form_validation->set_rules('username','username','required');
-			$this->form_validation->set_rules('password','password','required');
+			$this->form_validation->set_rules('username', 'username', 'required');
+			$this->form_validation->set_rules('password', 'password', 'required');
 			if($this->form_validation->run()){
-				$userInfor=array(
+				$userInfor = array(
 					'username' => $this->input->post('username'),
 					'password' => md5($this->input->post('password'))
 				);
 				$checkLogin = $this->user->checkLogin($userInfor);
 				if(!$checkLogin){
-					$this->session->set_flashdata('mess','info incorrect');
+					$this->session->set_flashdata('mess', 'info incorrect');
 				}
 				else{
-					$this->session->set_userdata('user',$userInfor);
+					$this->session->set_userdata('user', $userInfor);
 					return redirect(base_url());
 				}
 			}
@@ -80,13 +80,13 @@ class UserController extends CI_Controller{
 		if(isset($_SESSION['user'])){
 			$users = $this->user->list();
 			$data['users'] = $users;
-			return $this->load->view('user/home',$data);
+			return $this->load->view('user/home', $data);
 		}
-		return redirect(base_url().'login');
+		return redirect(base_url() . 'login');
 	}
 
 	public function logout(){
 		$this->session->sess_destroy();
-		return redirect(base_url().'login');
+		return redirect(base_url() . 'login');
 	}
 }

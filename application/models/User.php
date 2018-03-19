@@ -1,16 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 class User extends CI_Model
-{protected $key='id';
+{
 	function __construct() {
         parent::__construct();
     }
 
     public function list()
     {
-        $this->db->select('*');
-        $this->db->order_by('id', 'asc');
-        return $this->db->get('users')->result_array();
+        return $this->db->select('*')->order_by('id')->get('users')->result_array();
     }
 
     public function create($data){
@@ -20,38 +18,36 @@ class User extends CI_Model
     }
 
     public function delete($id){
-    	$this->db->where('id',$id);
-    	return $this->db->delete('users');
+    	return $this->db->where('id',$id)->delete('users');
     }
 
     function update($id, $data)
     {
-        $this->db->where('username', $data['username']);
-        $this->db->where('id !=', $id);
-        $count = $this->db->get('users')->num_rows();
+        $count = $this->db->where('username', $data['username'])
+            ->where('id !=', $id)
+            ->get('users')
+            ->num_rows();
         if($count > 0)
             return false;
-        $this->db->where('id',$id);
-        return $this->db->update('users',$data);
+        return $this->db->where('id', $id)
+            ->update('users', $data);
     }
 
     function checkLogin($data){
-        $this->db->where('username', $data['username']);
-        $this->db->where('password', $data['password']);
-        $count = $this->db->get('users')->num_rows();
+        $count = $this->db->where('username', $data['username'])
+            ->where('password', $data['password'])
+            ->get('users')->num_rows();
         if($count > 0)
             return true;
         return false;
     }
 
     function getUser($id){
-        $this->db->where('id',$id);
-        return $this->db->get('users')->row_array();
+        return $this->db->where('id', $id)->get('users')->row_array();
     }
 
     public function checkUserExist($username){
-        $this->db->where('username',$username);
-        $count = $this->db->get('users')->num_rows();
+        $count = $this->db->where('username', $username)->get('users')->num_rows();
         if($count > 0)
             return false;
         return true;
