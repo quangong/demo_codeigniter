@@ -1,65 +1,80 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-?><!DOCTYPE html>
-<html>
-    <head>
-        <title>create user</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script type="text/javascript" src="/application/views/jquery-3.1.1.min.js" ></script>
-        <script type="text/javascript" src="/application/views/jquery.validate.js" ></script>
-        <style type="text/css" media="screen">
-            form{
-                width: 600px;
+<div class="container layout-right">
+  <div class="row">
+      <h1 class="page-header">Create User</h1>
+      <b style="color: red"><?php echo $this->session->flashdata('mess')?></b>
+    <form style="width: 600px; float: right" method="post" class="create-form">
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" class="form-control" id="username" placeholder="Enter username" name="username">
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" class="form-control" id="password" placeholder="Enter password" name="password">
+      </div>
+      <div class="form-group">
+        <label for="fullname">Fullname:</label>
+        <input type="text" class="form-control" id="fullname" placeholder="Enter fullname" name="fullname">
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number:</label>
+        <input type="text" class="form-control" id="phone" placeholder="Enter phone" name="phone">
+      </div>
+      <button type="submit">Create</button>
+    </form>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('.create-form').validate({
+          rules:{
+            username:{
+              required:true,
+              minlength:6,
+              maxlength:10
+            },
+            password:{
+              required:true,
+              minlength:6,
+              maxlength:10
+            },
+            fullname:{
+              required:true,
+              maxlength:20
+            },
+            phone:{
+              required:true,
+              minlength:10,
+              maxlength:11
             }
-        </style>
-     </head>
-    <body>
-        <b style="color:red"><?= $this->session->flashdata('mess')?></b>
-        <form action="" method="post" accept-charset="utf-8" id="create">
-           <fieldset>
-              <legend>create user</legend>
-              <div><label>username: </label><input type="text" name="username" value="" size="25"  /></div>
-              <br />
-              <div><label>Password: </label><input type="password" name="password" value="" size="25"  /></div>
-              <br />
-              <input type="submit" name="ok" value="create"  />
-           </fieldset>
-        </form>
-        <script type="text/javascript">
-        $(document).ready(function(){
-                $('#create').validate({
-                    rules:{
-                        username:{
-                            required:true,
-                            minlength:6,
-                            maxlength:10
-                        },
-                        password:{
-                            required:true,
-                            minlength:6,
-                            maxlength:10
-                        },
-                    },
-                    messages:{
-                        username:{
-                            required:"vui lòng nhập username",
-                            minlength:"Enter at least 6 characters",
-                            maxlength:"Enter no more than 10 characters"
-                        },
-                        password:{
-                            required:"vui lòng nhập password",
-                            minlength:"Enter at least 6 characters",
-                            maxlength:"Enter no more than 10 characters"
-                        },
-                    }
-                });
-            });
-        </script>
-        <style>
-            .error{
-                color:red;
-                font-weight:bold;
-            }
-        </style>
-    </body>
-</html>
+          },
+          messages:{
+            username:{
+              required:"Please enter username",
+              minlength:"Enter at least 6 characters",
+              maxlength:"Enter no more than 10 characters"
+            },
+            password:{
+              required:"Please enter password",
+              minlength:"Enter at least 6 characters",
+              maxlength:"Enter no more than 10 characters"
+            },
+            fullname:{
+              required:"Please enter fullname",
+              maxlength:"Enter no more than 20 characters"
+            },
+            phone:{
+              required:"Please enter phone number",
+              minlength:"Enter at least 10 characters",
+              maxlength:"Enter no more than 11 characters"
+            },
+          }
+        });
+      });
+    </script>
+  <style>
+    .error{
+      color:red;
+      font-weight:bold;
+    }
+  </style>
+  </div>
+</div>
+ 

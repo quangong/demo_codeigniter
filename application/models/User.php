@@ -10,6 +10,7 @@ class User extends CI_Model
     public function list()
     {
         return $this->db->select('*')
+            ->where('role',2)
             ->order_by('id')
             ->get('users')
             ->result_array();
@@ -41,12 +42,10 @@ class User extends CI_Model
 
     function checkLogin($data)
     {
-        $count = $this->db->where('username', $data['username'])
+        return $this->db->where('username', $data['username'])
             ->where('password', $data['password'])
-            ->get('users')->num_rows();
-        if($count > 0)
-            return true;
-        return false;
+            ->get('users')
+            ->row_array();
     }
 
     function getUser($id)

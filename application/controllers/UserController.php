@@ -11,61 +11,94 @@ class UserController extends CI_Controller
 
 	public function createUser()
 	{
+		if(!isset($_SESSION['user'])){
+			return redirect(base_url('login'));
+		}
+		$user = $this->session->userdata('user');
+		if($user['role'] != 1)
+		 	return show_error('permission denied', 403);
 		if($this->input->post()){
 			$this->form_validation->set_rules('username', 'username', 'required|min_length[6]|max_length[10]');
 			$this->form_validation->set_rules('password', 'password', 'required|min_length[6]|max_length[10]');
+			$this->form_validation->set_rules('fullname', 'fullname', 'required|max_length[20]');
+			$this->form_validation->set_rules('phone', 'phone number', 'required|min_length[10]|max_length[11]');
 			if($this->form_validation->run()){
 				$userInfor = array(
 					'username' => $this->input->post('username'),
-					'password' => md5($this->input->post('password'))
+					'password' => md5($this->input->post('password')),
+					'fullname' => $this->input->post('fullname'),
+					'phone_number' => $this->input->post('phone'),
+					'role' => 2
 				);
 				if($this->user->create($userInfor)){
-					$this->session->set_flashdata('mess', 'create success!');
+					$this->session->set_flashdata('mess', 'Create success!');
 					return redirect(base_url());
 				}
-				$this->session->set_flashdata('mess', 'user already exist!');
+				$this->session->set_flashdata('mess', 'User already exist!');
 			}
 		}
-		return $this->load->view('user/create');
+		$data['temp'] = 'user/create';
+		return $this->load->view('user/template', $data);
 	}
 
 	public function updateUser()
 	{
+		if(!isset($_SESSION['user'])){
+			return redirect(base_url('login'));
+		}
+		$info = $this->session->userdata('user');
 		$id = $this->uri->segment(2);
 		if(!$this->user->findOrFail($id))
-			return $this->load->view('errors/error_404');
-		$info = $this->user->getUser($id);
+			return show_404();
+		if($id != $info['id'])
+			return show_error('permission denied', 403);
 		if($this->input->post()){
-			$this->form_validation->set_rules('username','username', 'required|min_length[6]|max_length[10]');
-			$this->form_validation->set_rules('password', 'password', 'required|min_length[6]|max_length[10]');
+			$this->form_validation->set_rules('fullname', 'fullname', 'required|max_length[20]');
+			$this->form_validation->set_rules('phone', 'phone number', 'required|min_length[10]|max_length[11]');
 			if($this->form_validation->run()){
 				$userInfor = array(
-					'username' => $this->input->post('username'),
-					'password' => md5($this->input->post('password'))
+					'fullname' => $this->input->post('fullname'),
+					'phone_number' => $this->input->post('phone'),
+					'username' => $info['username'],
+					'password' => $info['password'],
+					'role' => $info['role']
 				);
 				if($this->user->update($id, $userInfor)){
-					$this->session->set_flashdata('mess', 'update success!');
-					return redirect(base_url());
+					$this->session->set_flashdata('mess', 'Update success!');
+					$_SESSION['user']['fullname'] = $userInfor['fullname'];
+					$_SESSION['user']['phone_number'] = $userInfor['phone_number'];
 				}
-				$this->session->set_flashdata('mess', 'user already exist!');
+				else
+				$this->session->set_flashdata('mess', 'User already exist!');
 			}
 		}
+		$info = $this->session->userdata('user');
 		$data['info'] = $info;
-		return $this->load->view('user/edit',$data);
+		$data['temp'] = 'user/edit';
+		return $this->load->view('user/template', $data);
 	}
 
 	public function deleteUser()
 	{
+		if(!isset($_SESSION['user'])){
+			return redirect(base_url('login'));
+		}
+		$user = $this->session->userdata('user');
+		if($user['role'] != 1)
+		 	return show_error('permission denied', 403);
 		$id = $this->uri->segment(2);
 		if(!$this->user->findOrFail($id))
-			return $this->load->view('errors/error_404');
+			return show_404();
 		$this->user->delete($id);
-		$this->session->set_flashdata('mess', 'delete success!');
+		$this->session->set_flashdata('mess', 'Delete success!');
 		return redirect(base_url());
 	}
 
 	public function login()
 	{
+		if(isset($_SESSION['user'])){
+			return redirect(base_url());
+		}
 		if($this->input->post()){
 			$this->form_validation->set_rules('username', 'username', 'required');
 			$this->form_validation->set_rules('password', 'password', 'required');
@@ -75,16 +108,16 @@ class UserController extends CI_Controller
 					'password' => md5($this->input->post('password'))
 				);
 				$checkLogin = $this->user->checkLogin($userInfor);
-				if(!$checkLogin){
-					$this->session->set_flashdata('mess', 'info incorrect');
+				if(empty($checkLogin)){
+					$this->session->set_flashdata('mess', 'Info incorrect');
 				}
 				else{
-					$this->session->set_userdata('user', $userInfor);
+					$this->session->set_userdata('user', $checkLogin);
 					return redirect(base_url());
 				}
 			}
 		}
-		return $this->load->view('user/login');
+		return $this->load->view('login/login');
 	}
 
 	public function index()
@@ -92,7 +125,8 @@ class UserController extends CI_Controller
 		if(isset($_SESSION['user'])){
 			$users = $this->user->list();
 			$data['users'] = $users;
-			return $this->load->view('user/home', $data);
+			$data['temp'] = 'user/home';
+			return $this->load->view('user/template', $data);
 		}
 		return redirect(base_url('login'));
 	}

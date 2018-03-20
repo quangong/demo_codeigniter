@@ -1,65 +1,52 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-?><!DOCTYPE html>
-<html>
-    <head>
-        <title>update user</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script type="text/javascript" src="/application/views/jquery-3.1.1.min.js" ></script>
-        <script type="text/javascript" src="/application/views/jquery.validate.js" ></script>
-        <style type="text/css" media="screen">
-            form{
-                width: 600px;
+<div class="container layout-right">
+  <div class="row">
+      <h1 class="page-header">Edit User</h1>
+      <b style="color: red"><?php echo $this->session->flashdata('mess')?></b>
+    <form style="width: 600px; float: right" method="post" class="create-form">
+     <div class="form-group">
+        <label for="fullname">Fullname:</label>
+        <input type="text" class="form-control" id="fullname" value="<?php echo $info['fullname']?>" name="fullname">
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number:</label>
+        <input type="text" class="form-control" id="phone" value="<?php echo $info['phone_number']?>" name="phone">
+      </div>
+      <button type="submit">Edit</button>
+    </form>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('.create-form').validate({
+          rules:{
+            fullname:{
+              required:true,
+              maxlength:20
+            },
+            phone:{
+              required:true,
+              minlength:10,
+              maxlength:11
             }
-        </style>
-     </head>
-    <body>
-        <b style="color:red"><?= $this->session->flashdata('mess')?></b>
-        <form action="" method="post" accept-charset="utf-8" id="update">
-           <fieldset>
-              <legend>update user</legend>
-              <div><label>username: </label><input type="text" name="username" value="<?=$info['username']?>" size="25"  /></div>
-              <br />
-              <div><label>Password: </label><input type="password" name="password" value="" size="25"  /></div>
-              <br />
-              <input type="submit" name="ok" value="update"  />
-           </fieldset>
-        </form>
-        <script type="text/javascript">
-        $(document).ready(function(){
-                $('#update').validate({
-                    rules:{
-                        username:{
-                            required:true,
-                            minlength:6,
-                            maxlength:10
-                        },
-                        password:{
-                            required:true,
-                            minlength:6,
-                            maxlength:10
-                        },
-                    },
-                    messages:{
-                        username:{
-                            required:"vui lòng nhập username",
-                            minlength:"Enter at least 6 characters",
-                            maxlength:"Enter no more than 10 characters"
-                        },
-                        password:{
-                            required:"vui lòng nhập password",
-                            minlength:"Enter at least 6 characters",
-                            maxlength:"Enter no more than 10 characters"
-                        },
-                    }
-                });
-            });
-        </script>
-        <style>
-            .error{
-                color:red;
-                font-weight:bold;
-            }
-        </style>
-    </body>
-</html>
+          },
+          messages:{
+            fullname:{
+              required:"Please enter fullname",
+              maxlength:"Enter no more than 20 characters"
+            },
+            phone:{
+              required:"Please enter phone number",
+              minlength:"Enter at least 10 characters",
+              maxlength:"Enter no more than 11 characters"
+            },
+          }
+        });
+      });
+    </script>
+  <style>
+    .error{
+      color:red;
+      font-weight:bold;
+    }
+  </style>
+  </div>
+</div>
+ 
