@@ -1,7 +1,7 @@
 <div class="container layout-right">
   <div class="row">
       <h1 class="page-header">Edit User</h1>
-      <b style="color: red"><?php echo $this->session->flashdata('mess')?></b>
+      <b style="color: red"><?php echo $this->session->flashdata('mess-edit')?></b>
     <form style="width: 600px; float: right" method="post" class="create-form">
      <div class="form-group">
         <label for="fullname">Fullname:</label>

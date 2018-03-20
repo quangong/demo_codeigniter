@@ -64,12 +64,12 @@ class UserController extends CI_Controller
 					'role' => $info['role']
 				);
 				if($this->user->update($id, $userInfor)){
-					$this->session->set_flashdata('mess', 'Update success!');
+					$this->session->set_flashdata('mess-edit', 'Update success!');
 					$_SESSION['user']['fullname'] = $userInfor['fullname'];
 					$_SESSION['user']['phone_number'] = $userInfor['phone_number'];
 				}
 				else
-				$this->session->set_flashdata('mess', 'User already exist!');
+				$this->session->set_flashdata('mess-edit', 'User already exist!');
 			}
 		}
 		$info = $this->session->userdata('user');
